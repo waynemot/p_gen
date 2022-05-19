@@ -1,0 +1,11 @@
+= form_with(model: password, local: true) do |form|
+  - if password.errors.any?
+    #error_explanation
+      %h2
+        = pluralize(password.errors.count, "error")
+        prohibited this password from being saved:
+      %ul
+        - password.errors.full_messages.each do |message|
+          %li= message
+  .actions
+    = form.submit
