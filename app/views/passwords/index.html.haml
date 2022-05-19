@@ -3,12 +3,19 @@
 %table
   %thead
     %tr
-      %th{:colspan => "3"}
+      %th{:colspan => "5"}
   %tbody
-    - @passwords.each do |password|
+    = form_for :password do |f|
       %tr
-        %td= link_to 'Show', password
-        %td= link_to 'Edit', edit_password_path(password)
-        %td= link_to 'Destroy', password, method: :delete, data: { confirm: 'Are you sure?' }
+        %td
+          = f.input :len
+        %td
+          = f.check_box :upcase_first
+        %td
+          = f.check_box :spec_char
+        %td
+          = f.check_box :upcase_any
+        %td
+          = @result ? @result.to_s : ""
+
 %br/
-= link_to 'New Password', new_password_path

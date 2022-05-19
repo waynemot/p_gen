@@ -7,6 +7,7 @@ class Generator < ApplicationRecord
   @specials = %w[! @ # $ % ^ * & * - + ?]
 
   def self.gen(len = 8, upcase_first = false, spec_char = false, upcase_any = false)
+    Random.srand Time.now.to_i
     work_str = ""
     odd_len = false
     if len >= 6
