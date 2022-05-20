@@ -1,3 +1,12 @@
 Rails.application.routes.draw do
-  # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
+  resource :passwords
+  post "/", controller: :passwords, action: :new
+  patch "/", controller: :passwords, action: :new
+  post "/passwords/new", controller: :passwords, action: :new
+  patch "/passwords/new", controller: :passwords, action: :new
+  patch "/passwords/show", controller: :passwords, action: :new
+  get "/passwords", controller: :passwords, action: :new
+  get "/passwords/", controller: :passwords, action: :new
+
+  root controller: :passwords, action: :index
 end
