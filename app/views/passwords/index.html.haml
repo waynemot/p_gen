@@ -1,21 +1,65 @@
-%p#notice= notice
-%h1 Passwords
-%table
-  %thead
-    %tr
-      %th{:colspan => "5"}
-  %tbody
-    = form_for :password do |f|
+.container-fluid
+  %p#notice= notice
+  %h3 Passwords Generator
+  %p
+    .card.card-body.bg-light
+      Passwords generated using a pseudorandom number generator
+      attempting to generate passwords with high entropy and memorable.
+  %table.pw_gen_table
+    -#%thead
       %tr
-        %td
-          = f.input :len
-        %td
-          = f.check_box :upcase_first
-        %td
-          = f.check_box :spec_char
-        %td
-          = f.check_box :upcase_any
-        %td
-          = @result ? @result.to_s : ""
-
-%br/
+        %th.text-center
+          Length
+        %th.text-center
+          Upcase 1st Char
+        %th.text-center
+          Special Chars
+        %th.text-center
+          Upcase Anywhere
+    %thead
+      %col{style: "width: 20%"}
+      %col{style: "width: 80%"}
+    %tbody
+      = form_for :password do |f|
+        %tr
+          %td
+            Length
+          %td
+            - vals = []
+            - i = 6
+            - while i < 24
+              - vals << [i, i]
+              - i += 1
+            =# f.select :len, options_for_select(vals)
+            = f.number_field :len, value: 8, min: 6
+        %tr
+          %td
+            Capitalize first character
+          %td
+            = f.check_box :upcase_first
+        %tr
+          %td
+            Add special characters
+          %td
+            = f.check_box :spec_char
+        %tr
+          %td
+            Capitalize characters anywhere
+          %td
+            = f.check_box :upcase_any
+        %tr
+          %td
+            Number to generate
+          %td
+            = f.number_field :num, value: 10, min: 1
+        %tr
+          %td
+            Results
+          %td
+            = text_area_tag :results, @results.join("\n"), rows: @results.count()+4, cols: 30
+            =# @result ? @result.to_s : ""
+        %tr
+          %td
+          %td
+            = f.submit "Generate"
+  %br/

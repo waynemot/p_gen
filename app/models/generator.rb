@@ -1,13 +1,13 @@
 class Generator < ApplicationRecord
   self.abstract_class = true
 
+  attr_accessor :len, :upcase_first, :spec_char, :upcase_any
   @consonants = %w[b c d f g h j k l m n p r s t v w x y z]
   @digits = { 'l' => 1, 'e' => 3, 'o' => 0, 'b' => 6, 't' => 7, 'g' => 9, 'c' => 2, 'h' => 5, 'r' => 4, 'd' => 8}
   @vowels = %w[a e i o u]
   @specials = %w[! @ # $ % ^ * & * - + ?]
 
   def self.gen(len = 8, upcase_first = false, spec_char = false, upcase_any = false)
-    Random.srand Time.now.to_i
     work_str = ""
     odd_len = false
     if len >= 6
