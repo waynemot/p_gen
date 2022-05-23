@@ -1,0 +1,16 @@
+
+<% logger.info ">>> index.js.erb: @results: "+@results.join(" ") %>
+$("#strengths").html("")
+<% @results.each do |result| %>
+  <% Rails.logger.info ">>>> result: "+result %>
+  current_html = $("#strengths").html()
+  $("#strengths").html(current_html+"<%=result.to_s%> ")
+  eval_info = zxcvbn("<%= result %>")
+  tmp_html = $("#strengths").html()
+  $("#strengths").html(tmp_html+" Strength: "+eval_info["crack_times_display"]['online_no_throttling_10_per_second']+"<br/>")
+
+  //rating = zxcvbn(<%= result %>)['crack_times_display']['online_no_throttling_10_per_second']
+  //$("#strengths").html(rating)
+
+  //$("#strengths").html(<%= result%> "+(zxcvbn(<%= result %>)['crack_times_display']['online_no_throttling_10_per_second']))
+<% end %>

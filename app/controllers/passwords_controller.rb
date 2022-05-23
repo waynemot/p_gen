@@ -36,6 +36,8 @@ class PasswordsController < ApplicationController
     end
     respond_to do |format|
       format.html {render :index}
+      format.js {render "index.js"
+      }
     end
   end
 

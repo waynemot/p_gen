@@ -20,7 +20,7 @@
       %col{style: "width: 20%"}
       %col{style: "width: 80%"}
     %tbody
-      = form_for :password do |f|
+      = form_for :password, remote: true do |f|
         %tr
           %td
             Length
@@ -56,12 +56,13 @@
           %td
             Results
           %td
-            = text_area_tag :results, @results.join("\n"), rows: @results.count()+4, cols: 30
-            =# @result ? @result.to_s : ""
+            %div#results{style: "display: none;"}
+              = @results.join("\n")
         %tr
           %td
           %td
             .card.card-body.bg_light
+              %div#strengths
         %tr
           %td
           %td
