@@ -2,8 +2,9 @@
   %p#notice= notice
   %h3 Passwords Generator
   %p
-    .card.card-body.bg-light
+    .card.card-body.bg-light.fit_content
       Passwords generated using a pseudorandom number generator
+      <br/>
       attempting to generate passwords with high entropy and memorable.
   %table.pw_gen_table
     -#%thead
@@ -69,16 +70,16 @@
           %td
             Results
           %td
-            .card.card-body.bg_light
+            .card.card-body.bg_light.fit_content
               %div#strengths
                 %table#strength_table
                   %thead
                     %tr
                       %td
                       %td{colspan: 4}
-                        Crack times by attacker limitations
+                        Crack times (by attack rate/type or method)
                     %tr
-                      %td{style: ""}
+                      %td
                         Password
                       %td
                         100/hour<br/>Throttled
@@ -96,8 +97,5 @@
                       %td
                       %td
 
-        %tr.form_control
-          %td
-          %td
-            =# f.submit "Generate", class: "btn btn-xs btn-primary"
+
   %br/
