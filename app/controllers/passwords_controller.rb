@@ -25,7 +25,7 @@ class PasswordsController < ApplicationController
       max = params[:password][:num].to_i
       @results = []
       while max > 0
-        res = Generator.gen(params[:password][:len].to_i, params[:password][:upcase_first], params[:password][:spec_char], params[:password][:upcase_any])
+        res = Generator.gen(params[:password][:len].to_i, params[:password][:upcase_first], params[:password][:add_num], params[:password][:spec_char], params[:password][:upcase_any])
         @results << res
         max -= 1
       end

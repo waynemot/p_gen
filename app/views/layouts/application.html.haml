@@ -2,10 +2,12 @@
 %html
   %head
     %meta{:content => "text/html; charset=UTF-8", "http-equiv" => "Content-Type"}/
-    %title PwdGen
+    %title PseudoRandom Password Generator
     = csrf_meta_tags
     = csp_meta_tag
     = stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload'
     = javascript_include_tag 'application', 'data-turbolinks-track': 'reload'
+    <link rel="stylesheet" href="https://unlcms.unl.edu/wdn/templates_5.3/css/main.css?dep=5.3.4">
+    <link rel="shortcut icon" href="https://unlcms.unl.edu/wdn/templates_5.3/includes/global/favicon/favicon.ico"/>
   %body
     = yield

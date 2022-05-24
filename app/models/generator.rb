@@ -1,13 +1,34 @@
 class Generator < ApplicationRecord
   self.abstract_class = true
 
-  attr_accessor :len, :upcase_first, :spec_char, :upcase_any
+  attr_accessor :len, :upcase_first, :spec_char, :upcase_any, :add_num
   @consonants = %w[b c d f g h j k l m n p r s t v w x y z]
   @digits = { 'l' => 1, 'e' => 3, 'o' => 0, 'b' => 6, 't' => 7, 'g' => 9, 'c' => 2, 'h' => 5, 'r' => 4, 'd' => 8}
   @vowels = %w[a e i o u]
   @specials = %w[! @ # $ % ^ * & * - + ?]
 
-  def self.gen(len = 8, upcase_first = false, spec_char = false, upcase_any = false)
+  def self.gen(len = 8, upcase_first = false, add_num = false, spec_char = false, upcase_any = false)
+    Rails.logger.info "upcase_first: #{upcase_first} #{upcase_first.is_a?(String)}"
+    if upcase_first && upcase_first.eql?("1") || upcase_first == 1
+      upcase_first = true
+    else
+      upcase_first = false
+    end
+    if upcase_any && upcase_any.eql?("1") || upcase_any == 1
+      upcase_any = true
+    else
+      upcase_any = false
+    end
+    if spec_char && spec_char.eql?("1") || spec_char == 1
+      spec_char = true
+    else
+      spec_char = false
+    end
+    if add_num && add_num.eql?("1")
+      add_num = true
+    else
+      add_num = false
+    end
     work_str = ""
     odd_len = false
     if len >= 6
@@ -20,9 +41,11 @@ class Generator < ApplicationRecord
         work_length = len - 2
       end
       i = 0
+      have_num_added = add_num ? false : true
       while(i <= work_length)
         work_str += @consonants[rand(@consonants.length)]
-        if (@digits[work_str[work_str.length() - 1]] && rand(100) < 23)
+        if (add_num && @digits[work_str[work_str.length() - 1]] && rand(100) < 23)
+          have_num_added = true
           work_str[work_str.length() - 1] = @digits[work_str[work_str.length() - 1]].to_s
         elsif (upcase_any && (rand(100) < 17))
           work_str[work_str.length() - 1] = work_str[work_str.length() - 1].upcase
@@ -43,6 +66,9 @@ class Generator < ApplicationRecord
       end
       if upcase_first
         work_str[0] = work_str[0].upcase if @consonants.include?(work_str[0]) || @vowels.include?(work_str[0])
+      end
+      unless have_num_added
+        work_str[rand(work_str.length - 1)] = rand(9).to_s
       end
       if work_str.length < len
         diff = len - work_str.length

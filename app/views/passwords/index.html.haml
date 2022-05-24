@@ -17,8 +17,9 @@
         %th.text-center
           Upcase Anywhere
     %thead
-      %col{style: "width: 20%"}
-      %col{style: "width: 80%"}
+      %tr
+        %col{style: "width: 20%"}
+        %col{style: "width: 80%"}
     %tbody
       = form_for :password, remote: true do |f|
         %tr
@@ -27,7 +28,7 @@
           %td
             - vals = []
             - i = 6
-            - while i < 24
+            - while i < 28
               - vals << [i, i]
               - i += 1
             =# f.select :len, options_for_select(vals)
@@ -37,6 +38,11 @@
             Capitalize first character
           %td
             = f.check_box :upcase_first
+        %tr
+          %td
+            Add a number
+          %td
+            = f.check_box :add_num
         %tr
           %td
             Add special characters
@@ -52,19 +58,25 @@
             Number to generate
           %td
             = f.number_field :num, value: 10, min: 1
+            %span.controls
+              = f.submit "Generate", class: "btn btn-xs btn-primary"
         %tr
           %td
-            Results
           %td
             %div#results{style: "display: none;"}
               = @results.join("\n")
         %tr
           %td
+            Results
           %td
             .card.card-body.bg_light
               %div#strengths
                 %table#strength_table
                   %thead
+                    %tr
+                      %td
+                      %td{colspan: 4}
+                        Crack times by attacker limitations
                     %tr
                       %td{style: ""}
                         Password
@@ -84,8 +96,8 @@
                       %td
                       %td
 
-        %tr
+        %tr.form_control
           %td
           %td
-            = f.submit "Generate"
+            =# f.submit "Generate", class: "btn btn-xs btn-primary"
   %br/
