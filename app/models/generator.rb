@@ -61,6 +61,10 @@ class Generator < ApplicationRecord
         # Rails.logger.info ">>> Added #{work_str[work_str.length() - 1]}"
         i += 1
         work_str += @vowels[rand(@vowels.length - 1)]
+        i += 1
+        if(upcase_any && (rand(100) < 17))
+          work_str[work_str.length - 1] = work_str[work_str.length() - 1].upcase
+        end
         # Rails.logger.info ">> added vowel: #{work_str[work_str.length - 1]}"
         if (add_num && @digits[work_str[work_str.length() - 1]] && rand(100) < 23)
           # Rails.logger.info ">> Replace vowel w/digit..."
@@ -68,7 +72,6 @@ class Generator < ApplicationRecord
           have_num_added = true
         end
         Rails.logger.info ">>> Added #{work_str[work_str.length() - 1]}"
-        i += 1
         if spec_char
           if rand(100) < 18
             added_spec_char = true
@@ -87,21 +90,26 @@ class Generator < ApplicationRecord
         # Rails.logger.info ">> upcase first in work_str"
         work_str[0] = work_str[0].upcase if @consonants.include?(work_str[0]) || @vowels.include?(work_str[0])
       end
-      if !have_num_added && add_num
+      if  add_num && !have_num_added
         # Rails.logger.info ">> if !#{have_num_added} && #{add_num} (have_num & add_num)"
         work_str[rand(work_str.length - 1)] = rand(9).to_s
       end
-      if !added_spec_char && spec_char
+      if  spec_char && !added_spec_char
         # Rails.logger.info ">> if !#{added_spec_char} && #{spec_char} (have_num & add_num)"
         work_str[rand(work_str.length() - 1)] = @specials[rand(@specials.length - 1)]
       end
+      Rails.logger.info ">>> upcase_any: #{upcase_any} work_str test: #{work_str.match(/[A-Z]/)}"
       if upcase_any && work_str.match(/[A-Z]/).nil?
-        # Rails.logger.info ">> if #{upcase_any} && !#{capped_any} (upcase_any && !capped_any)"
+        Rails.logger.info ">> if #{upcase_any} && !#{capped_any} (upcase_any && !capped_any)"
         j = 0
-        k = rand(work_str.length - 1)
-        while work_str[k].match(/[a-z]/)
-          work_str[k] = work_str[k].upcase
-          break
+        done = false
+        while done == false
+          k = rand(work_str.length - 1)
+          if work_str[k].match(/[a-z]/)
+            work_str[k] = work_str[k].upcase
+            Rails.logger.info ">> replaced #{work_str[k]}"
+            done = true
+          end
         end
       end
       # Rails.logger.info ">>>> Length adjust #{work_str}"

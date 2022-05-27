@@ -17,3 +17,5 @@ $ ->
             if (res_out.length > 0)
               alert("Strengths:\n" + res_out)
               $("#strengths").html("<%= res_out %>")
+          console.log("set submit data-transitioning=false.... ")
+          $("input.btn").on(":hover").fadeOut()
