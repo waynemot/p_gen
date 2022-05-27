@@ -65,7 +65,7 @@ $on-laptop:        800px !default;
 
   &,
   &:visited {
-    color: darkgray;
+    color: (--visited);
   }
 }
 
@@ -306,6 +306,9 @@ a.dcf-institution-title {
 header#login-header {
   --link: #000;
   --visited: #000;
+  a:hover {
+    color: #d00000;
+  }
 }
 div#dcf-site-affiliation {
   font-size: 0.6em;

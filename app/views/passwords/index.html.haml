@@ -5,7 +5,14 @@
     .card.card-body.bg-light.fit_content
       Passwords generated using a pseudorandom number generator
       <br/>
-      attempting to generate passwords with high entropy and memorable.
+      applied across consonant, vowel arrays, and special characters.
+      <br/>
+      The selectors improve on the simplistic base algorithm by
+      <br/>
+      changing characters or inserting digits at random frequency.
+      <br/>
+      <br/>
+      This intends to make passwords with high entropy and being memorable.
       %span
         Password strength measured using
         = link_to "zxcvbn estimator", "https://github.com/dropbox/zxcvbn", target: "_blank"

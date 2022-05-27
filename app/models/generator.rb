@@ -6,6 +6,7 @@ class Generator < ApplicationRecord
   @digits = { 'l' => 1, 'e' => 3, 'o' => 0, 'b' => 6, 't' => 7, 'g' => 9, 'c' => 2, 'h' => 5, 'r' => 4, 'd' => 8}
   @vowels = %w[a e i o u]
   @specials = %w[! @ # $ % ^ * & * - + ?]
+  @weights[{'add_num' => 23},{'upcase_any' => 17}]
 
   def self.gen(len = 8, upcase_first = false, add_num = false, spec_char = false, upcase_any = false)
     # Rails.logger.info "upcase_first: #{upcase_first} is_a string? #{upcase_first.is_a?(String)}"
@@ -49,7 +50,7 @@ class Generator < ApplicationRecord
       # Rails.logger.info ">>>> have_num_added: #{have_num_added}, capped_any: #{capped_any}"
       while(i <= work_length)
         work_str += @consonants[rand(@consonants.length - 1)]
-        if (add_num && @digits[work_str[work_str.length() - 1]] && rand(100) < 23)
+        if (add_num && @digits[work_str[work_str.length() - 1]] && rand(100) < @weight.find(['add_num']))
           # Rails.logger.info ">>> add_num replacing work_str char, work_str: #{work_str}"
           have_num_added = true
           work_str[work_str.length() - 1] = @digits[work_str[work_str.length() - 1]].to_s
