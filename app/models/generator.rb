@@ -6,7 +6,7 @@ class Generator < ApplicationRecord
   @digits = { 'l' => 1, 'e' => 3, 'o' => 0, 'b' => 6, 't' => 7, 'g' => 9, 'c' => 2, 'h' => 5, 'r' => 4, 'd' => 8}
   @vowels = %w[a e i o u]
   @specials = %w[! @ # $ % ^ * & * - + ?]
-  @weights[{'add_num' => 23},{'upcase_any' => 17}]
+  @weights = [{'add_num' => 23},{'upcase_any' => 17},{'spec_char' => 18}]
 
   def self.gen(len = 8, upcase_first = false, add_num = false, spec_char = false, upcase_any = false)
     # Rails.logger.info "upcase_first: #{upcase_first} is_a string? #{upcase_first.is_a?(String)}"
@@ -48,33 +48,34 @@ class Generator < ApplicationRecord
       added_spec_char = spec_char ? false : true
       capped_any = !upcase_first || (upcase_any ? false : true)
       # Rails.logger.info ">>>> have_num_added: #{have_num_added}, capped_any: #{capped_any}"
-      while(i <= work_length)
+      while i <= work_length
         work_str += @consonants[rand(@consonants.length - 1)]
-        if (add_num && @digits[work_str[work_str.length() - 1]] && rand(100) < @weight.find(['add_num']))
+        Rails.logger.info ">>> weight #{@weights.collect{|w| w["add_num"]}}"
+        if add_num && @digits[work_str[work_str.length - 1]] && rand(100) < @weights.collect { |w| w['add_num'] }[0]
           # Rails.logger.info ">>> add_num replacing work_str char, work_str: #{work_str}"
           have_num_added = true
-          work_str[work_str.length() - 1] = @digits[work_str[work_str.length() - 1]].to_s
-        elsif (upcase_any && (rand(100) < 17))
+          work_str[work_str.length - 1] = @digits[work_str[work_str.length - 1]].to_s
+        elsif upcase_any && (rand(100) < @weights.collect { |w| w['upcase_any'] }[0])
           # Rails.logger.info ">>> Upcase_any fired in elsif, work_str: #{work_str}"
-          work_str[work_str.length() - 1] = work_str[work_str.length() - 1].upcase
+          work_str[work_str.length - 1] = work_str[work_str.length - 1].upcase
           capped_any = true
         end
-        # Rails.logger.info ">>> Added #{work_str[work_str.length() - 1]}"
+        # Rails.logger.info ">>> Added #{work_str[work_str.length - 1]}"
         i += 1
         work_str += @vowels[rand(@vowels.length - 1)]
         i += 1
-        if(upcase_any && (rand(100) < 17))
-          work_str[work_str.length - 1] = work_str[work_str.length() - 1].upcase
+        if upcase_any && (rand(100) < @weights.collect { |w| w['upcase_any'] }[0])
+          work_str[work_str.length - 1] = work_str[work_str.length - 1].upcase
         end
         # Rails.logger.info ">> added vowel: #{work_str[work_str.length - 1]}"
-        if (add_num && @digits[work_str[work_str.length() - 1]] && rand(100) < 23)
+        if add_num && @digits[work_str[work_str.length - 1]] && rand(100) < @weights.collect { |w| w['add_num'] }[0]
           # Rails.logger.info ">> Replace vowel w/digit..."
-          work_str[work_str.length() - 1] = @digits[work_str[work_str.length() - 1]].to_s
+          work_str[work_str.length - 1] = @digits[work_str[work_str.length - 1]].to_s
           have_num_added = true
         end
-        Rails.logger.info ">>> Added #{work_str[work_str.length() - 1]}"
+        Rails.logger.info ">>> Added #{work_str[work_str.length - 1]}"
         if spec_char
-          if rand(100) < 18
+          if rand(100) < @weights.collect{|w|w['spec_char']}[0]
             added_spec_char = true
             work_str += @specials[rand(@specials.length - 1)].to_s
             # Rails.logger.info ">>> Added #{work_str[work_str.length() - 1].to_s}"
@@ -87,6 +88,8 @@ class Generator < ApplicationRecord
         end
       end
       # Rails.logger.info ">>>> Postprocess #{work_str}"
+      # Ensure the generated word complies with all constraints
+      # and apply first_char capitalization
       if upcase_first
         # Rails.logger.info ">> upcase first in work_str"
         work_str[0] = work_str[0].upcase if @consonants.include?(work_str[0]) || @vowels.include?(work_str[0])
@@ -97,17 +100,17 @@ class Generator < ApplicationRecord
       end
       if  spec_char && !added_spec_char
         # Rails.logger.info ">> if !#{added_spec_char} && #{spec_char} (have_num & add_num)"
-        work_str[rand(work_str.length() - 1)] = @specials[rand(@specials.length - 1)]
+        work_str[rand(work_str.length - 1)] = @specials[rand(@specials.length - 1)]
       end
       Rails.logger.info ">>> upcase_any: #{upcase_any} work_str test: #{work_str.match(/[A-Z]/)}"
       if upcase_any && work_str.match(/[A-Z]/).nil?
         Rails.logger.info ">> if #{upcase_any} && !#{capped_any} (upcase_any && !capped_any)"
         j = 0
         done = false
-        while done == false
+        until done
           k = rand(work_str.length - 1)
           if work_str[k].match(/[a-z]/)
-            work_str[k] = work_str[k].upcase
+            work_str[k] = work_str[k].try(:upcase)
             Rails.logger.info ">> replaced #{work_str[k]}"
             done = true
           end
@@ -117,10 +120,10 @@ class Generator < ApplicationRecord
       if work_str.length < len
         diff = len - work_str.length
         while diff > 0
-          if add_num
+          if add_num # prefer adding number to short inputs
             work_str += rand(9).to_s
           else
-            if rand(100) > 50
+            if rand(100) > 50 # Coin toss vowel/consonant
               work_str += @vowels[rand(@vowels.length - 1)]
             else
               work_str += @consonants[rand(@consonants.length - 1)]
@@ -133,7 +136,7 @@ class Generator < ApplicationRecord
         while diff > 0
           diff -= 1
           begin
-            work_str[work_str.length()] = ""
+            work_str = work_str[work_str.length - 1] = ""
           rescue NoMethodError => e
             puts "no method err: work: (#{work_str.length}) #{work_str}"
           end
