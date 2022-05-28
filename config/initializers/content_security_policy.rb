@@ -6,12 +6,13 @@
 
 Rails.application.config.content_security_policy do |policy|
 #   policy.default_src :self, :https
-#   policy.font_src    :self, :https, :data
-#   policy.img_src     :self, :https, :data
+   policy.font_src    :self, 'unlcms.unl.edu/wdn/*', :https, :data
+   policy.img_src     :self, 'unlcms.unl.edu/wdn/*', :https, :data
 #   policy.object_src  :none
-#   policy.script_src  :self, :https
+   policy.script_src  :self, :https
 #   policy.style_src   :self, :https
-  policy.default_src   :self, 'https://unlcms.unl.edu/*'
+  policy.default_src   :self, 'unlcms.unl.edu/wdn/*', :https
+  policy.style_src :self, 'unlcms.unl.edu/wdn/*', :https
 #   # Specify URI for violation reports
 #   # policy.report_uri "/csp-violation-report-endpoint"
 end
