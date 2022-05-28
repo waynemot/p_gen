@@ -6,6 +6,8 @@ class Generator < ApplicationRecord
   @digits = { 'l' => 1, 'e' => 3, 'o' => 0, 'b' => 6, 't' => 7, 'g' => 9, 'c' => 2, 'h' => 5, 'r' => 4, 'd' => 8}
   @vowels = %w[a e i o u]
   @specials = %w[! @ # $ % ^ * & * - + ?]
+  # Weight/percentage at which random actions are taken during the password algorithm
+  # adjust frequency of occurrence here
   @weights = [{'add_num' => 23},{'upcase_any' => 17},{'spec_char' => 18}]
 
   def self.gen(len = 8, upcase_first = false, add_num = false, spec_char = false, upcase_any = false)
