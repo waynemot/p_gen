@@ -1,111 +1,112 @@
 .container-fluid
-  %p#notice= notice
-  %h3 Passwords Generator
-  %p
-    .card.card-body.bg-light.fit_content
-      Passwords generated using a pseudorandom number generator
-      <br/>
-      applied across consonant, vowel arrays, and special characters.
-      <br/>
-      The selectors improve on the simplistic base algorithm by
-      <br/>
-      changing characters or inserting digits at random frequency.
-      <br/>
-      <br/>
-      This intends to make passwords with high entropy and being memorable.
-      %span
-        Password strength measured using
-        = link_to "zxcvbn estimator", "https://github.com/dropbox/zxcvbn", target: "_blank"
-  %table.pw_gen_table
-    -#%thead
-      %tr
-        %th.text-center
-          Length
-        %th.text-center
-          Upcase 1st Char
-        %th.text-center
-          Special Chars
-        %th.text-center
-          Upcase Anywhere
-    %thead
-      %tr
-        %col{style: "width: 20%"}
-        %col{style: "width: 80%"}
-    %tbody
-      = form_for :password, remote: true do |f|
+  .dcf-pl-5
+    %p#notice= notice
+    %h3 Passwords Generator
+    %p
+      .card.card-body.bg-light.fit_content
+        Passwords generated using a pseudorandom number generator
+        <br/>
+        applied across consonant, vowel arrays, and special characters.
+        <br/>
+        The selectors improve on the simplistic base algorithm by
+        <br/>
+        changing characters or inserting digits at random frequency.
+        <br/>
+        <br/>
+        This intends to make passwords with high entropy and being memorable.
+        %span
+          Password strength measured using
+          = link_to "zxcvbn estimator", "https://github.com/dropbox/zxcvbn", target: "_blank"
+    %table.pw_gen_table
+      -#%thead
         %tr
-          %td
+          %th.text-center
             Length
-          %td
-            - vals = []
-            - i = 6
-            - while i < 28
-              - vals << [i, i]
-              - i += 1
-            =# f.select :len, options_for_select(vals)
-            = f.number_field :len, value: 8, min: 6
+          %th.text-center
+            Upcase 1st Char
+          %th.text-center
+            Special Chars
+          %th.text-center
+            Upcase Anywhere
+      %thead
         %tr
-          %td
-            Capitalize first character
-          %td
-            = f.check_box :upcase_first
-        %tr
-          %td
-            Add a number
-          %td
-            = f.check_box :add_num
-        %tr
-          %td
-            Add special characters
-          %td
-            = f.check_box :spec_char
-        %tr
-          %td
-            Capitalize characters anywhere
-          %td
-            = f.check_box :upcase_any
-        %tr
-          %td
-            Number to generate
-          %td
-            = f.number_field :num, value: 10, min: 1
-            %span.controls
-              = f.submit "Generate", class: "btn btn-xs btn-primary"
-        %tr
-          %td
-          %td
-            %div#results{style: "display: none;"}
-              = @results.join("\n")
-        %tr
-          %td
-            Results
-          %td
-            .card.card-body.bg_light.fit_content
-              %div#strengths
-                %table#strength_table
-                  %thead
-                    %tr
-                      %td
-                      %td{colspan: 4}
-                        Crack times (by attack rate/type or method)
-                    %tr
-                      %td
-                        Password
-                      %td
-                        100/hour<br/>Throttled
-                      %td
-                        10/sec<br/>NonThrottled
-                      %td
-                        Offline<br/>Slow
-                      %td
-                        Offline<br/>Fast
-                  %tbody
-                    %tr
-                      %td
-                      %td
-                      %td
-                      %td
-                      %td
+          %col{style: "width: 20%"}
+          %col{style: "width: 80%"}
+      %tbody
+        = form_for :password, remote: true do |f|
+          %tr
+            %td
+              Length
+            %td
+              - vals = []
+              - i = 6
+              - while i < 28
+                - vals << [i, i]
+                - i += 1
+              =# f.select :len, options_for_select(vals)
+              = f.number_field :len, value: 8, min: 6
+          %tr
+            %td
+              Capitalize first character
+            %td
+              = f.check_box :upcase_first
+          %tr
+            %td
+              Add a number
+            %td
+              = f.check_box :add_num
+          %tr
+            %td
+              Add special characters
+            %td
+              = f.check_box :spec_char
+          %tr
+            %td
+              Capitalize characters anywhere
+            %td
+              = f.check_box :upcase_any
+          %tr
+            %td
+              Number to generate
+            %td
+              = f.number_field :num, value: 10, min: 1
+              %span.controls
+                = f.submit "Generate", class: "btn btn-xs btn-primary"
+          %tr
+            %td
+            %td
+              %div#results{style: "display: none;"}
+                = @results.join("\n")
+          %tr
+            %td
+              Results
+            %td
+              .card.card-body.bg_light.fit_content
+                %div#strengths
+                  %table#strength_table
+                    %thead
+                      %tr
+                        %td
+                        %td{colspan: 4}
+                          Crack times (by attack rate/type or method)
+                      %tr
+                        %td
+                          Password
+                        %td
+                          100/hour<br/>Throttled
+                        %td
+                          10/sec<br/>NonThrottled
+                        %td
+                          Offline<br/>Slow
+                        %td
+                          Offline<br/>Fast
+                    %tbody
+                      %tr
+                        %td
+                        %td
+                        %td
+                        %td
+                        %td
 
 
-  %br/
+    %br/
