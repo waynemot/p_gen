@@ -1,12 +1,12 @@
 .container-fluid
   .dcf-pl-5
     %p#notice= notice
-    %h3 Passwords Generator
+    %h3 Passwords Tester/Generator
     %p
       .card.card-body.bg-light.fit_content
         Passwords generated using a pseudorandom number generator
         <br/>
-        applied across consonant, vowel arrays, and special characters.
+        applied across consonant, vowel, and special character arrays.
         <br/>
         The selectors improve on the simplistic base algorithm by
         <br/>
@@ -21,7 +21,7 @@
       .card.card-body.bg-light.fit_content
         %label.dcf-d-inline-flex
           Test a password:
-        %input#pw_test_input{class: "dcf-d-inline-flex", placeholder: "enter a password to test"}
+        %input#pw_test_input{class: "dcf-d-inline-flex dcf-mb-2", placeholder: "enter a password to test"}
         %button.btn.btn-sm
           -#$("#pw_test_result.val(zxcvbn($(this).val())[\'crack_times_display\'][\'online_throttling_100_per_hour\']);
           = link_to('Test password', 'javascript:var xzc_ret=zxcvbn($(\'#pw_test_input\').val());alert(\'100/hour throttled: \'+xzc_ret[\'crack_times_display\'][\'online_throttling_100_per_hour\']);', :id => :foo)
