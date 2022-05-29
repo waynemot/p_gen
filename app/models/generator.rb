@@ -51,11 +51,9 @@ class Generator < ApplicationRecord
       capped_any = !upcase_first || (upcase_any ? false : true)
       while i <= work_length
         work_str += @consonants[rand(@consonants.length - 1)]
-        Rails.logger.info ">>> weight #{@weights.collect{|w| w["add_num"].nil? ? 0 : w["add_num"].to_i}.inject(:+)}"
         if add_num && @digits[work_str[work_str.length - 1]] && rand(100) < (@weights.collect{ |w| w['add_num'].nil? ? 0 : w['add_num'].to_i }.inject(:+))
           work_str[work_str.length - 1] = @digits[work_str[work_str.length - 1]].to_s
           have_num_added = true
-          Rails.logger.info "Added num: #{work_str}"
         elsif upcase_any && rand(100) < (@weights.collect{ |w| w['upcase_any'].nil? ? 0 : w['upcase_any'] }.inject(:+))
           work_str[work_str.length - 1] = work_str[work_str.length - 1].upcase
           capped_any = true
@@ -90,30 +88,7 @@ class Generator < ApplicationRecord
           capped_any = true
         end
       end
-      if  add_num && !have_num_added
-        work_str[rand(work_str.length - 1)] = rand(9).to_s
-        have_num_added = true
-        Rails.logger.info "post: added num: #{work_str}"
-      end
-      if  spec_char && !added_spec_char
-        work_str[rand(work_str.length - 1)] = @specials[rand(@specials.length - 1)]
-        added_spec_char = true
-        Rails.logger.info "post: added spec char: #{work_str}"
-      end
-      Rails.logger.info ">>> upcase_any: #{upcase_any} work_str test: #{work_str.match(/[A-Z]/)}"
-      if upcase_any && work_str.match(/[A-Z]/).nil?
-        Rails.logger.info ">> if #{upcase_any} && !#{capped_any} (upcase_any && !capped_any)"
-        j = 0
-        done = false
-        until done
-          k = rand(work_str.length - 1)
-          if work_str[k].match(/[a-z]/)
-            work_str[k] = work_str[k].try(:upcase)
-            Rails.logger.info ">> replaced #{work_str[k]}"
-            done = true
-          end
-        end
-      end
+
       Rails.logger.info ">>>> Length adjust #{work_str}: #{work_str.length} < #{len}"
       if work_str.length < len
         diff = len - work_str.length
@@ -131,20 +106,49 @@ class Generator < ApplicationRecord
         end
       elsif work_str.length > len
         diff = work_str.length - len
+        # Rails.logger.info "diff: #{work_str.length} - #{len} = #{diff}"
         while diff > 0
-          diff -= 1
           begin
-            cut_pt = rand(work_str.length-1)
-            while @specials.include? work_str[cut_pt] do cut_pt = rand(work_str.length-1) end
-            work_str = work_str.sub(/work_str[cut_pt]/,"")
+            done = false
+            while !done
+              cut_pt = rand(work_str.length-1)
+              # Don't delete specials/numbers if selected
+              if  spec_char && !@specials.include?(work_str[cut_pt])
+                if add_num && !((work_str[cut_pt]) !~ /\D/)
+                  done = true
+                  work_str = work_str.sub(/#{work_str[cut_pt]}/,"")
+                end
+              end
+            end
+            diff = work_str.length - len
           rescue NoMethodError => e
-            puts "no method err: work: (#{work_str.length}) #{work_str}"
+            Rails.logger.error "no method err: work: (#{work_str.length}) #{work_str}"
           end
           Rails.logger.info "shorter string: #{work_str}"
         end
       end
+      if  add_num && !have_num_added
+        work_str[rand(work_str.length - 1)] = rand(9).to_s
+      end
+      if  spec_char && !added_spec_char
+        work_str[rand(work_str.length - 1)] = @specials[rand(@specials.length - 1)]
+      end
+      # Rails.logger.info ">>> upcase_any: #{upcase_any} work_str test: #{work_str.match(/[A-Z]/)}"
+      if upcase_any && work_str.match(/[A-Z]/).nil?
+        Rails.logger.info ">> if #{upcase_any} && !#{capped_any} (upcase_any && !capped_any)"
+        j = 0
+        done = false
+        until done
+          k = rand(work_str.length - 1)
+          if work_str[k].match(/[a-z]/)
+            work_str[k] = work_str[k].try(:upcase)
+            Rails.logger.info ">> replaced #{work_str[k]}"
+            done = true
+          end
+        end
+      end
     end
-    Rails.logger.info ">>>>>>>>>>> Done >>>>>>>>>>>>> #{work_str[0..(len-1)]}"
+    # Rails.logger.info ">>>>>>>>>>> Done >>>>>>>>>>>>> #{work_str[0..(len-1)]}"
     work_str[0..(len-1)]
   end
 end

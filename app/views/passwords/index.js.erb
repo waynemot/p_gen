@@ -8,7 +8,7 @@ if (row_count > 1)
         $("#strength_table").find("tbody").children().first().remove()
 
 <% @results.each do |result| %>
-  <% Rails.logger.info ">>>> result: "+result %>
+  <%# Rails.logger.info ">>>> result: "+result %>
   //current_html = $("#strengths").html()
   //$("#strengths").html(current_html+"<%#=result.to_s%> ")
   //if($("#strength_table > tbody > tr").length > 0)
@@ -20,7 +20,7 @@ if (row_count > 1)
   s3 = eval_info['crack_times_display']['offline_slow_hashing_1e4_per_second']
   s4 = eval_info['crack_times_display']['offline_fast_hashing_1e10_per_second']
   ostring = "<tr><td>"+"<%=result%>"+"</td><td>"+s1+"</td><td>"+s2+"</td><td>"+s3+"</td><td>"+s4+"</td><td>"
-  console.log("output: "+ostring)
+  //console.log("output: "+ostring)
   $("#strength_table tbody").append(ostring)
   //$("#strength_table tbody").find("tr:last").after(ostring)
   //tmp_html = $("#strengths").html()

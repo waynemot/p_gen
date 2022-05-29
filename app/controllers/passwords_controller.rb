@@ -1,6 +1,6 @@
 class PasswordsController < ApplicationController
   #before_action :set_password, only: %i[ show edit update destroy ]
-
+  content_security_policy_report_only only: :index
   # GET /passwords or /passwords.json
   def index
     @results = @results.nil? ? [] : @results

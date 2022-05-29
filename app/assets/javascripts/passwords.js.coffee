@@ -2,6 +2,7 @@
 # All this logic will automatically be available in application.js.
 #= require "zxcvbn.js"
 $ ->
+
   update_results = ->
           console.log("Results changed....")
           res_set = $(this).val().split("\n");
@@ -19,3 +20,8 @@ $ ->
               $("#strengths").html("<%= res_out %>")
           console.log("set submit data-transitioning=false.... ")
           $("input.btn").on(":hover").fadeOut()
+  #
+  #
+test_pw =() ->
+  pw = $("input#pw_test_input").val()
+  alert(pw)

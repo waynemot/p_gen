@@ -17,6 +17,17 @@
         %span
           Password strength measured using
           = link_to "zxcvbn estimator", "https://github.com/dropbox/zxcvbn", target: "_blank"
+    %p#pw_test
+      .card.card-body.bg-light.fit_content
+        %label.dcf-d-inline-flex
+          Test a password:
+        %input#pw_test_input{class: "dcf-d-inline-flex", placeholder: "enter a password to test"}
+        %button.btn.btn-sm
+          = link_to('Test password', 'javascript:test_pw();', :id => :foo)
+          =#link_to "Test a password",  nil,href: nil, onclick: "test_pw"
+        %br
+        .pw_test_result
+
     %table.pw_gen_table
       -#%thead
         %tr
