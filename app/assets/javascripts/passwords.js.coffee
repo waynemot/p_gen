@@ -20,8 +20,10 @@ $ ->
               $("#strengths").html("<%= res_out %>")
           console.log("set submit data-transitioning=false.... ")
           $("input.btn").on(":hover").fadeOut()
-  #
-  #
-test_pw =() ->
-  pw = $("input#pw_test_input").val()
-  alert(pw)
+#
+# Getting a coffeescript function exposed to a form button syntax
+window.test_pw = ->
+  test_input = $("#pw_test_input")
+  if(test_input.length > 1 && test_input.val() != "")
+    zxc_res = zxcvbn(test_input.val())
+    $("#pw_test_result").append(zxc_res["crack_times_display"]['online_throttling_100_per_hour'])

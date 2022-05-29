@@ -23,8 +23,8 @@
           Test a password:
         %input#pw_test_input{class: "dcf-d-inline-flex", placeholder: "enter a password to test"}
         %button.btn.btn-sm
-          = link_to('Test password', 'javascript:test_pw();', :id => :foo)
-          =#link_to "Test a password",  nil,href: nil, onclick: "test_pw"
+          -#$("#pw_test_result.val(zxcvbn($(this).val())[\'crack_times_display\'][\'online_throttling_100_per_hour\']);
+          = link_to('Test password', 'javascript:var xzc_ret=zxcvbn($(\'#pw_test_input\').val());alert(\'100/hour throttled: \'+xzc_ret[\'crack_times_display\'][\'online_throttling_100_per_hour\']);', :id => :foo)
         %br
         .pw_test_result
 
