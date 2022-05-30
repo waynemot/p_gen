@@ -11,8 +11,6 @@ class Generator < ApplicationRecord
   @weights = [{'add_num' => 23},{'upcase_any' => 17},{'spec_char' => 18}]
 
   def self.gen(len = 8, upcase_first = false, add_num = false, spec_char = false, upcase_any = false)
-    # Rails.logger.info "upcase_first: #{upcase_first} is_a string? #{upcase_first.is_a?(String)}"
-    # Rails.logger.info "add_num: #{add_num} spec_char: #{spec_char}, upcase_any: #{upcase_any}"
     # Normalize form data passed
     if upcase_first && upcase_first.eql?("1") || upcase_first == 1
       upcase_first = true
@@ -41,9 +39,9 @@ class Generator < ApplicationRecord
         odd_len = true
       end
       if odd_len
-        work_length = len - 1
+        work_length = len + 1
       else
-        work_length = len - 2
+        work_length = len
       end
       i = 0
       have_num_added = add_num ? false : true
@@ -79,7 +77,7 @@ class Generator < ApplicationRecord
           i -= 1
         end
       end
-      Rails.logger.info ">>>> Postprocess #{work_str}"
+      #Rails.logger.info ">>>> Postprocess #{work_str}"
       # Ensure the generated word complies with all constraints
       # and apply first_char capitalization
       if upcase_first
@@ -89,7 +87,7 @@ class Generator < ApplicationRecord
         end
       end
 
-      Rails.logger.info ">>>> Length adjust #{work_str}: #{work_str.length} < #{len}"
+      #Rails.logger.info ">>>> Length adjust #{work_str}: #{work_str.length} < #{len}"
       if work_str.length < len
         diff = len - work_str.length
         while diff > 0
@@ -124,7 +122,7 @@ class Generator < ApplicationRecord
           rescue NoMethodError => e
             Rails.logger.error "no method err: work: (#{work_str.length}) #{work_str}"
           end
-          Rails.logger.info "shorter string: #{work_str}"
+          # Rails.logger.info "shorter string: #{work_str}"
         end
       end
       if  add_num && !have_num_added
@@ -135,14 +133,14 @@ class Generator < ApplicationRecord
       end
       # Rails.logger.info ">>> upcase_any: #{upcase_any} work_str test: #{work_str.match(/[A-Z]/)}"
       if upcase_any && work_str.match(/[A-Z]/).nil?
-        Rails.logger.info ">> if #{upcase_any} && !#{capped_any} (upcase_any && !capped_any)"
+        # Rails.logger.info ">> if #{upcase_any} && !#{capped_any} (upcase_any && !capped_any)"
         j = 0
         done = false
         until done
           k = rand(work_str.length - 1)
           if work_str[k].match(/[a-z]/)
             work_str[k] = work_str[k].try(:upcase)
-            Rails.logger.info ">> replaced #{work_str[k]}"
+            # Rails.logger.info ">> replaced #{work_str[k]}"
             done = true
           end
         end

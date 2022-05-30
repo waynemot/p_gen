@@ -3,7 +3,7 @@
  */
 
 $base-font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol" !default;
-$base-font-size:   12px !default;
+$base-font-size:   1em !default;
 $base-font-weight: 400 !default;
 $small-font-size:  $base-font-size * 0.875 !default;
 $base-line-height: 1.5 !default;
@@ -300,8 +300,13 @@ $on-laptop:        800px !default;
 }
 
 a.dcf-institution-title {
-  font-size: 0.75em;
+  font-size: 0.6em;
   color: #d00000 !important;
+  margin-left: 0.5em;
+}
+span.spacer_span {
+  font-size: 0.5em;
+  vertical-align: middle;
 }
 header#login-header {
   --link: #000;
@@ -311,5 +316,5 @@ header#login-header {
   }
 }
 div#dcf-site-affiliation {
-  font-size: 0.6em;
+  font-size: 0.7rem;
 }

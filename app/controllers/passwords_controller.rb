@@ -62,6 +62,17 @@ class PasswordsController < ApplicationController
 
   end
 
+  def pw_test
+    Rails.logger.info "pw_test params: #{params}"
+    respond_to do |format|
+      format.html {
+        flash[:notice]="Html response to pw tests update"
+        redirect_to passwords_path
+      }
+      format.js { render "passwords/_pw_test.js.erb"}
+    end
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_password

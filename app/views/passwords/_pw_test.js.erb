@@ -2,4 +2,5 @@
 <% Rails.logger.info "_pw_test.js.erb started..." %>
 var pw = $('#pw_test_input').val()
 var zxc_ret = zxcvbn(pw)
-$("div.pw_test_result").html("100/hour throttled: "+zxc_ret['crack_times_display']['online_throttling_100_per_hour']+"<br/>")
+$("div.pw_test_result").html("100/hour throttled: "+zxc_ret['crack_times_display']['online_throttling_100_per_hour']+"<br/>"+
+"10/sec unthrottled: "+zxc_ret['crack_times_display']['online_no_throttling_10_per_second'])

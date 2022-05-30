@@ -8,6 +8,6 @@ Rails.application.routes.draw do
   get "/passwords", controller: :passwords, action: :new
   get "/passwords/", controller: :passwords, action: :new
 
-  get '/pw_tests', controller: :pw_tests, action: :index
+  get '/pw_tests', controller: :passwords, action: :pw_test
   root controller: :passwords, action: :index
 end

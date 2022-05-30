@@ -4,7 +4,7 @@
 $ ->
 
   update_results = ->
-          console.log("Results changed....")
+          #console.log("Results changed....")
           res_set = $(this).val().split("\n");
           res_out = [];
           console.log("set size: "+res_set.length)
